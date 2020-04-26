@@ -1,0 +1,1 @@
+A simple JS game. Rock Paper Scissors from The Odin Project curriculum.
