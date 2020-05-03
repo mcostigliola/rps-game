@@ -1,48 +1,124 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>exercise</title>
-</head>
-<body>
+    <head>
+        <meta charset="utf-8">
+        <title>Rock,Paper,Scissors</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-  <script>
+    <body>
+        <div class="container">
+            <span id="score">0:0</span>
 
-   function computerPlay(){
-       let computerChoice = ['rock', 'paper', 'scissors'];
-       let randomChoice = Math.floor(Math.random() * 3);
-       let result = computerChoice[randomChoice];
-       return result;
-   } 
-   
-   function singleRound(playerSelection, computerSelection){
-        playerSelection = prompt('What\'s your choice? ').toLowerCase();
-        computerSelection= computerPlay().toLowerCase();
+            <button id="rock">ROCK</button>
+            <button id="paper">PAPER</button>
+            <button id="scissors">SCISSORS</button>
 
-        if(playerSelection == 'scissors' && computerSelection == 'rock'){
-            return 'CPU win! ' + computerSelection + ' beats ' + playerSelection; 
-        } else if(playerSelection == 'rock' && computerSelection == 'scissors'){
-            return 'You win! ' + playerSelection + ' beats ' + computerSelection; 
-        }else if(playerSelection.length === computerSelection.length){
-            return 'Draw you: ' + playerSelection + ' and CPU: ' + computerSelection ;
-        }else if(playerSelection.length > computerSelection.length || playerSelection == 'scissors' && computerSelection != 'rock'){
-            return 'You win!' + playerSelection + ' beats ' + computerSelection; 
-        }else if(playerSelection.length < computerSelection.length){
-            return 'CPU win!' + computerSelection + ' beats ' + playerSelection; 
-        }else{
-            return 'An error occurred!';
-        } 
-   }
+            <div id="msg"></div>
+            <h1 id="results"></h1>
+        </div>
 
-   function game(){
-       console.log(singleRound());
-       console.log(singleRound());
-       console.log(singleRound());
-       console.log(singleRound());
-       console.log(singleRound());
-   }
+        <script>
 
-   console.log(game());
-  </script>
-</body>
+                let playerScore = 0, computerScore = 0;
+                const score = document.querySelector('#score');
+                const msg = document.querySelector('#msg');
+                const winner = document.querySelector('#results');
+                const btn = Array.from(document.querySelectorAll('button'));
+
+                // Add event listner on all button
+                btn.forEach(btns => btns.addEventListener('click', displayResult));
+
+                // Reload page in 5 seconds.
+                function reloadPage(){
+                    window.location.reload();
+                }
+
+                // Append to var score the score and search in return message the str 'CPU '
+                // if present display CPU win, in other case display You win. At start verify
+                // the total score of a player.
+                function displayResult(e){
+                    let message = playRound(e.target.id, computerPlay());
+                    
+                    if(computerScore == 5){
+
+                        winner.textContent='CPU WIN!!!';
+                        setTimeout(reloadPage, 5000);
+
+                    }else if(playerScore == 5){
+
+                        winner.textContent='YOU WIN!!!';
+                        setTimeout(reloadPage, 5000);
+
+                    }else if(message.search('CPU ') >=0){
+
+                        computerScore++;
+                        msg.textContent='CPU Win!'
+
+                    }
+                    else{
+
+                        playerScore++;
+                        msg.textContent='You Win!'
+
+                    }
+
+                    // Append result to span#score
+                    score.textContent = `${playerScore}:${computerScore}`;
+
+                }
+
+                // Return a random choice from an array of 3 choices
+                function computerPlay(){
+
+                    let computerChoice = ['rock', 'paper', 'scissors'];
+                    let randomChoice = Math.floor(Math.random() * 3);
+                    let result = computerChoice[randomChoice];
+                    return result;
+
+                } 
+
+                // Compare the choices and return the winner.
+                function playRound(playerSelection, computerSelection){
+
+                    computerSelection = computerPlay();
+                    let point = 0;
+                    const container = document.querySelector('body');
+                    const result = document.createElement('div');
+                    
+
+                    if(playerSelection == 'scissors' && computerSelection == 'rock'){
+
+                        return 'CPU win! ' + computerSelection + ' beats ' + playerSelection; 
+
+                    } else if(playerSelection == 'rock' && computerSelection == 'scissors'){
+
+                        return 'You win! ' + playerSelection + ' beats ' + computerSelection; 
+
+                    }else if(playerSelection.length === computerSelection.length){
+
+                    return 'Draw you: ' + playerSelection + ' and CPU: ' + computerSelection ;
+
+                    }else if(playerSelection.length > computerSelection.length || playerSelection == 'scissors' && computerSelection != 'rock'){
+
+                    return 'You win!' + playerSelection + ' beats ' + computerSelection; 
+
+                    }else if(playerSelection.length < computerSelection.length){
+
+                    return 'CPU win!' + computerSelection + ' beats ' + playerSelection; 
+
+                    }
+                    else{
+
+                    return 'An error occurred!';
+
+                } 
+
+                    // Append result to <div>
+                    container.appendChild(result);
+
+                }
+
+        </script>
+    </body>
 </html>
